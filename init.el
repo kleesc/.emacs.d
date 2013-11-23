@@ -50,9 +50,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; to use non-graphical identification
 ;;
 ;; Remove user agent with (J r) from gmail from server buffer (^)
-;; (A z) for zombie groups, (A k) for killed groups
-;; (S k) to kill group
-;; (B m) to move article
 
 (setq user-mail-address "kenny.lee28@gmail.com")
 (setq user-full-name "Kenny Lee Sin Cheong")
@@ -63,8 +60,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 
 ;; Gmane
 (add-to-list 'gnus-secondary-select-methods '(nntp "news.gmane.org"))
-(setq gnus-newsgroup-maximum-articles 10000)
-
 
 ;; Imap gmail
 (add-to-list 'gnus-secondary-select-methods
@@ -86,17 +81,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
       smtpmail-smtp-service 587
       gnus-ignored-newsgroups "^to\\.\\[^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 
-;; all mails should be always displayed in the mailbox
-;(setq gnus-permanently-visible-groups ".*INBOX")
-
 ;; Message citation
 (setq message-citation-line-function 'message-insert-formatted-citation-line)
 (setq message-citation-line-format "On %a, %b %d %Y at %r, %f wrote:")
-
-;; Message signature
-(setq gnus-posting-styles
-      '((".*"
-         (signature "Kenny Lee Sin Cheong"))))
 
 ;; Contact autocompletion with Bbdb
 (setq bbdb/news-auto-create-p t)
@@ -122,6 +109,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; (gnus-add-configuration
 ;;  '(article (vertical 1.0 (summary .35 point) (article 1.0))))
 
+
 ;; Unicode Formatting
 (setq-default
  gnus-summary-line-format "%U%R%z %(%&user-date;  %-15,15f  %B%s%)\n"
@@ -135,9 +123,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
  gnus-sum-thread-tree-single-leaf "╰► "
  gnus-sum-thread-tree-vertical "│")
 
-;; Start gnus with topics toggled
-(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-
 ;; Group Formatting (topics)
 (setq gnus-topic-line-format "%i[ %u&topic-line; ] %v\n")
 
@@ -150,8 +135,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
      (format "%s %d" name total-number-of-articles)
      'face topic-face)))
 
-;; (T n) to add topic, (T m) to move .
-;; (gnus-topic-unindent) M-TAB doesn't work... System switch windows(Alt-TAB)
 
 ;; =====
 ;;  ERC
@@ -170,7 +153,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (require 'erc-join)
 (erc-autojoin-mode 1)
 ;; (setq erc-autojoin-channels-alist
-;;       '(("freenode.net" "#ruby" "#python-dev")
+;;       '(("freenode.net" "#ruby")
 ;;         ("rizon.net" "#bakabt")))
 
 
@@ -205,15 +188,15 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 
 (erc-button-mode nil) ;slow
 
-;(setq erc-user-full-name "Kenny Lee Sin Cheong")
-;(setq erc-email-userid "")
+;; (setq erc-user-full-name "Kenny Lee Sin Cheong")
+;; (setq erc-email-userid "")
 
-;; logging
-;;(setq erc-log-insert-log-on-open nil)
-(setq erc-log-channels t)
-(setq erc-log-channels-directory "~/.irclogs/")
-(setq erc-save-buffer-on-part t)
-(setq erc-hide-timestamps nil)
+;; logging:
+;; (setq erc-log-insert-log-on-open nil)
+;; (setq erc-log-channels t)
+;; (setq erc-log-channels-directory "~/.irclogs/")
+;; (setq erc-save-buffer-on-part t)
+;; (setq erc-hide-timestamps nil)
 
 ;; (defadvice save-buffers-kill-emacs (before save-logs (arg) activate)
 ;;   (save-some-buffers t (lambda () (when (and (eq major-mode 'erc-mode)
@@ -251,7 +234,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
   (when (y-or-n-p "IRC? ")
         (erc :server "irc.freenode.net" :port 6667 
              :nick "kleesc" :full-name "Kenny Lee Sin Cheong")
-        ;(erc :server "irc.rizon.net" :port 6667 :nick "kleesc")
+        (erc :server "irc.rizon.net" :port 6667 :nick "kleesc")
         ))
 
 
@@ -261,6 +244,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; ==================
 ;; 3.1 Prevent backups from littering the file system
 (setq backup-directory-alist '(("." . "~/emacsbackups")))
+
+;; Font size
+(set-face-attribute 'default nil :height 100) ;; In 1/10 pt 100*10 = 10pt
 
 ;; Region selection
 (transient-mark-mode 0)
@@ -275,6 +261,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
+;; Javascript-mode tab length
+(setq js-indent-level 2)
+
 ;; Minibuffer handling
 (ido-mode t)
 
@@ -285,10 +274,8 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 
 ;; Scrolling
 (setq scroll-conservatively 10)
-(setq scroll-margin 2) ;;7
+(setq scroll-margin 5) ;;7
 (setq inhibit-startup-screen 1)
-(global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
-(global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 
 ;; Parentheses
 (show-paren-mode t)
