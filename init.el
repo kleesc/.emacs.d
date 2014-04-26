@@ -394,8 +394,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
-
-
+;; Tramp
+(require 'tramp)
+(setq tramp-default-method "ssh")
 
 
 ;; 3.22 Mouse avoidance
