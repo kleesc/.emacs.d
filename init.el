@@ -293,6 +293,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (setq scroll-conservatively 10)
 (setq scroll-margin 2) ;;7
 (setq inhibit-startup-screen 1)
+(setq initial-scratch-message "")
 (global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
 (global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 
