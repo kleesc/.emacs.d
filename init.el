@@ -30,9 +30,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
   )
 
 
-;; ===========
-;;  LOAD PATH
-;; ===========
 
 ;; ======
 ;;  Gnus
@@ -263,7 +260,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (setq backup-directory-alist '(("." . "~/emacsbackups")))
 
 ;; Font size (in 24, font is unusually bigger...)
-;(set-face-attribute 'default nil :height 100) ;; In 1/10 pt 100*10 = 10pt
+(set-face-attribute 'default nil :height 100) ;; In 1/10 pt: 100*0.10 = 10pt
 
 ;; Region selection
 (transient-mark-mode 0)
@@ -342,6 +339,17 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
 (global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 
+;; Fullscreen toggle
+(defun toggle-fullscreen ()
+  "Toggle full screen on X11"
+  (interactive)
+  (when (eq window-system 'x)
+    (set-frame-parameter
+     nil 'fullscreen
+     (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
+
+(global-set-key [f11] 'toggle-fullscreen)
+
 
 
 
@@ -349,13 +357,15 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;;  Applications
 ;; ==============
 
-;; ============
+;; ------------
 ;; Color themes
-;; ============
+;; ------------
 (add-to-list 'load-path "~/.emacs.d/packages/color-theme-6.6.0")
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-comidia)
+
+
 
 ;; ---------
 ;; Yasnippet
