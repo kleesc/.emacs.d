@@ -256,10 +256,10 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 
 
 
-;; ==================
+;; ============================================================================================================
 ;;  EDITOR BEHAVIOUR
-;; ==================
-;; 3.1 Prevent backups from littering the file system
+;; ============================================================================================================
+;; Prevent backups from littering the file system
 (setq backup-directory-alist '(("." . "~/emacsbackups")))
 
 ;; Font size (in 24, font is unusually bigger...)
@@ -284,6 +284,10 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Minibuffer handling
 (ido-mode t)
 
+;; recentf Setup
+(recentf-mode t)
+(setq recentf-auto-cleanup 'never)
+
 ;; Modeline information
 (display-time-mode t)
 (column-number-mode t)
@@ -292,13 +296,14 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Scrolling
 (setq scroll-conservatively 10)
 (setq scroll-margin 2) ;;7
+
+;; Startup
 (setq inhibit-startup-screen 1)
 (setq initial-scratch-message "")
-(global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
-(global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 
 ;; Parentheses
 (show-paren-mode t)
+;;(electric-pair-mode t)
 
 ;; Line wrapping
 (global-visual-line-mode 1)
@@ -307,6 +312,14 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (setq require-final-newline t)
 (setq next-line-add-newlines nil)
 
+;; GUI
+(tool-bar-mode -1)
+;;(menu-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; 3.22 Mouse avoidance
+;; (mouse-avoidance-mode 'banish)
+
 ;; Browser
 (setq browse-url-browser-function 'browse-url-generic)
 (setq browse-url-generic-program "google-chrome")
@@ -314,34 +327,44 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Emacs server
 ;;(server-start) ---------BUGS IN WINDOWS
 
+;; ANSI Color in terminals
+(ansi-color-for-comint-mode-on)
+
+;; Advanced commands
+(put 'narrow-to-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+(put 'set-goal-column 'disabled nil)
+
 ;; ------------
 ;; Key bindings
 ;; ------------
 ;; (global-set-key [f5] 'copy-region-as-kill)
+(global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
+(global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 
 
-;; ==============
-;;  GUI Settings
-;; ==============
-(tool-bar-mode -1)
-;;(menu-bar-mode -1)
-(scroll-bar-mode -1)
-
-;; Color themes
-(add-to-list 'load-path "~/.emacs.d/packages/color-theme-6.6.0")
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-comidia)
 
 
 ;; ==============
 ;;  Applications
 ;; ==============
+
+;; ============
+;; Color themes
+;; ============
+(add-to-list 'load-path "~/.emacs.d/packages/color-theme-6.6.0")
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-comidia)
+
 ;; ---------
 ;; Yasnippet
 ;; ---------
 (add-to-list 'load-path "~/.emacs.d/packages/yasnippet-master")
 (require 'yasnippet) ;; Not yasnippet-bundle
+
+(add-hook 'term-mode-hook (lambda() ;; Yas interferes with tab completion in ansi-term.
+        (setq yas-dont-activate t))) ;; So I'm deactivating yas for this hook.
 
 ;;(yas/initialize)
 ;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
@@ -379,32 +402,4 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/packages/auto-complete-1.3.1/dict")
 (ac-config-default)
-
-;; =======
-;;  Modes
-;; =======
-;; ANSI Color in terminals
-(ansi-color-for-comint-mode-on)
-
-;; recentf Setup
-(recentf-mode t)
-(setq recentf-auto-cleanup 'never)
-
-;; Advanced commands
-(put 'narrow-to-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
-(put 'set-goal-column 'disabled nil)
-
-;; Tramp
-(require 'tramp)
-(setq tramp-default-method "ssh")
-
-
-;; 3.22 Mouse avoidance
-;; (mouse-avoidance-mode 'banish)
-
-;; 3.23 Electric Pair
-;; (electric-pair-mode t)
-
-
 
