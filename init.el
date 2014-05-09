@@ -357,44 +357,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;;  Applications
 ;; ==============
 
-;; ------------
-;; Color themes
-;; ------------
-(add-to-list 'load-path "~/.emacs.d/packages/color-theme-6.6.0")
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-comidia)
-
-
-
-;; ---------
-;; Yasnippet
-;; ---------
-(add-to-list 'load-path "~/.emacs.d/packages/yasnippet-master")
-(require 'yasnippet) ;; Not yasnippet-bundle
-
-(add-hook 'term-mode-hook (lambda() ;; Yas interferes with tab completion in ansi-term.
-        (setq yas-dont-activate t))) ;; So I'm deactivating yas for this hook.
-
-;;(yas/initialize)
-;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
-(yas/global-mode 1)
-
-(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
-
-;; ----------
-;; Zencodding
-;; ----------
-(add-to-list 'load-path "~/.emacs.d/packages/rooney-zencoding-fc15836")
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
-
-;; -----
-;; Magit
-;; -----
-(add-to-list 'load-path "~/.emacs.d/packages/magit-1.2.0")
-(require 'magit)
-
 ;; ------------------------------------------------------
 ;; Little Man Computer Simulator (Stefan Monnier IFT1215)
 ;; ------------------------------------------------------
@@ -405,11 +367,67 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; -----------------------------------
 (load "~/.emacs.d/packages/gambit")
 
+
+;; Initialize packages and activate them before the end of the script.
+;; (usually done after the script is ran, so package initialization can be tricky)
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+;; ------------
+;; Repositories
+;; ------------
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+
+;; ------
+;; Themes
+;; ------
+;;(add-to-list 'custom-theme-load-path ;; "/home/ken/.emacs.d/elpa/cyberpunk-theme-20140415.945/cyberpunk-theme.el")
+(load-theme 'cyberpunk t)
+
+;; ------
+;; Auctex
+;; ------
+
+;; -----
+;; Magit
+;; -----
+(require 'magit)
+
 ;; -------------
 ;; Auto-complete
 ;; -------------
-(add-to-list 'load-path "~/.emacs.d/packages/auto-complete-1.3.1")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/packages/auto-complete-1.3.1/dict")
+;(add-to-list 'ac-dictionary-directories "~/.emacs.d/packages/auto-complete-1.3.1/dict")
 (ac-config-default)
+
+;; ---------
+;; Yasnippet
+;; ---------
+(require 'yasnippet)
+
+(add-hook 'term-mode-hook (lambda() ;; Yas interferes with tab completion in ansi-term.
+        (setq yas-dont-activate t))) ;; So I'm deactivating it for this hook.
+
+;;(yas/initialize)
+;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
+(yas-global-mode t)
+;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
+
+;; ----------
+;; Zencodding
+;; ----------
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+
+;; ------------
+;; Haskell mode
+;; ------------
+(require 'haskell-mode)
+
+;; ------------
+;; Clojure mode
+;; ------------
+(require 'clojure-mode)
 
