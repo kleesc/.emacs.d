@@ -260,7 +260,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (setq backup-directory-alist '(("." . "~/emacsbackups")))
 
 ;; Font size (in 24, font is unusually bigger...)
-(set-face-attribute 'default nil :height 100) ;; In 1/10 pt: 100*0.10 = 10pt
+(set-face-attribute 'default nil :height 120) ;; In 1/10 pt: 100*0.10 = 10pt
 
 ;; Region selection
 (transient-mark-mode 0)
