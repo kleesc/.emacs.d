@@ -395,12 +395,56 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; -----
 (require 'magit)
 
+;; ----------
+;; Zencodding
+;; ----------
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+
+;; --------
+;; js2-mode 
+;; --------
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+;; For more comprehensive completions you can opt to evaluate the code
+;; for candidates. A browser needs to be connected to Emacs for the
+;; evaluation completions to work. Put this in your init.el file.
+
+;; `(setq ac-js2-evaluate-calls t)'
+
+;; To add completions for external libraries add something like this:
+
+;; (add-to-list 'ac-js2-external-libraries "path/to/lib/library.js")
+
+;; Then connect a browser to Emacs by calling `(run-skewer)'. You may
+;; need to save the buffer for completions to start.
+
+;; If auto-complete mode is installed on your system then completions
+;; should start showing up otherwise use `completion-at-point'.
+
+;; Note: library completions will only work if `ac-js2-evaluate-calls'
+;; is set and a browser is connected to Emacs.
+
+;; ------------
+;; Haskell mode
+;; ------------
+(require 'haskell-mode)
+
+;; ------------
+;; Clojure mode
+;; ------------
+(require 'clojure-mode)
+
+
 ;; -------------
 ;; Auto-complete
 ;; -------------
 (require 'auto-complete-config)
 ;(add-to-list 'ac-dictionary-directories "~/.emacs.d/packages/auto-complete-1.3.1/dict")
 (ac-config-default)
+
+(add-hook 'js2-mode-hook 'ac-js2-mode)
 
 ;; ---------
 ;; Yasnippet
@@ -414,20 +458,3 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
 (yas-global-mode t)
 ;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
-
-;; ----------
-;; Zencodding
-;; ----------
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
-
-;; ------------
-;; Haskell mode
-;; ------------
-(require 'haskell-mode)
-
-;; ------------
-;; Clojure mode
-;; ------------
-(require 'clojure-mode)
-
