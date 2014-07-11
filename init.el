@@ -395,12 +395,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; -----
 (require 'magit)
 
-;; ----------
-;; Zencodding
-;; ----------
-(require 'zencoding-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
-
 ;; --------
 ;; js2-mode 
 ;; --------
