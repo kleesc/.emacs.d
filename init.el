@@ -384,7 +384,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Themes
 ;; ------
 ;;(add-to-list 'custom-theme-load-path ;; "/home/ken/.emacs.d/elpa/cyberpunk-theme-20140415.945/cyberpunk-theme.el")
-(load-theme 'cyberpunk t)
+(load-theme 'junio t)
 
 ;; ------
 ;; Auctex
