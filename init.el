@@ -425,6 +425,11 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; ------------
 (require 'haskell-mode)
 
+;; -------
+;; Go mode
+;; -------
+(add-hook 'before-save-hook #'gofmt-before-save)
+
 ;; ------------
 ;; Clojure mode
 ;; ------------
