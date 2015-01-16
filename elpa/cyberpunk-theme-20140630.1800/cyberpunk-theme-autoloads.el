@@ -3,16 +3,16 @@
 ;;; Code:
 
 
-;;;### (autoloads nil "cyberpunk-theme" "cyberpunk-theme.el" (21433
-;;;;;;  48318 753333 633000))
+;;;### (autoloads nil "cyberpunk-theme" "cyberpunk-theme.el" (21687
+;;;;;;  20903 694514 717000))
 ;;; Generated autoloads from cyberpunk-theme.el
 
 (when load-file-name (add-to-list 'custom-theme-load-path (file-name-as-directory (file-name-directory load-file-name))))
 
 ;;;***
 
-;;;### (autoloads nil nil ("cyberpunk-theme-pkg.el") (21433 48318
-;;;;;;  849031 272000))
+;;;### (autoloads nil nil ("cyberpunk-theme-pkg.el") (21687 20903
+;;;;;;  774213 978000))
 
 ;;;***
 

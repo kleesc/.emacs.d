@@ -1,6 +1,9 @@
-;; This buffer is for notes you don't want to save, and for Lisp evaluation.
-;; If you want to create a file, visit that file with C-x C-f,
-;; then enter the text in that file's own buffer.
+;; init.el --- 
+;;
+;; Author: Kenny Lee Sin Cheong
+;; URL: https://kleesc.net
+;;
+;; TODO: Seperate into smaller manageable modules
 
 ;; ==================
 ;;  CUSTOM FUNCTIONS
@@ -11,36 +14,42 @@
   (interactive "sRegexp to search for: ")
   (multi-occur-in-matching-buffers ".*" regexp))
 
-;; 1.4 Cyberpunk Cursor
+;; Cyberpunk Cursor
 (defvar blink-cursor-colors (list  "#92c48f" "#6785c5" "#be369c" "#d9ca65")
   "On each blink the cursor will cycle to the next color in this list.")
 
 (setq blink-cursor-count 0)
 (defun blink-cursor-timer-function ()
   "Cyberpunk variant of timer 'blink-cursor-timer'. OVERWRITES original version in 'frame.el'.
-
 This one changes the cursor color on each blink. Define colors in 'blink-cursor-colors'."
   (when (not (internal-show-cursor-p))
         (when (>= blink-cursor-count (length blink-cursor-colors))
               (setq blink-cursor-count 0))
         (set-cursor-color (nth blink-cursor-count blink-cursor-colors))
-        (setq blink-cursor-count (+ 1 blink-cursor-count))
-        )
-  (internal-show-cursor nil (not (internal-show-cursor-p)))
-  )
+        (setq blink-cursor-count (+ 1 blink-cursor-count)))
+  (internal-show-cursor nil (not (internal-show-cursor-p))))
 
+;; Fullscreen toggle
+(defun toggle-fullscreen ()
+  "Toggle full screen on X11"
+  (interactive)
+  (when (eq window-system 'x)
+    (set-frame-parameter
+     nil 'fullscreen
+     (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
 
 ;; ======
 ;;  Gnus
 ;; ======
+(setq gnus-home-directory "~/.emacs.d/Gnus/")
+
 (setq gnus-select-method '(nnnil))
 (setq mm-text-html-renderer 'w3m)
 (setq mm-inline-text-html-with-images t)
 (setq w3m-goto-article-function 'browse-url)
 ;(define-key gnus-article-mode-map [?M] 'browse-url-firefox)
 ;w3m-view-url-with-external-browser
-
 
 ;; append "pinentry-program /usr/bin/pinentry-curses" to
 ;; /home/ken/.gnupg/gpg-agent.conf
@@ -150,6 +159,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; (T n) to add topic, (T m) to move .
 ;; (gnus-topic-unindent) M-TAB doesn't work... System switch windows(Alt-TAB)
 
+
 ;; =====
 ;;  ERC
 ;; =====
@@ -231,7 +241,6 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (add-hook 'erc-insert-post-hook 'erc-truncate-buffer)
 (setq erc-truncate-buffer-on-save t)
 
-
 ;; Clears out annoying erc-track-mode stuff for when we don't care.
 ;; Useful for when ChanServ restarts :P
 (defun reset-erc-track-mode ()
@@ -240,8 +249,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
   (erc-modified-channels-update))
 (global-set-key (kbd "C-c r") 'reset-erc-track-mode)
 
-
-;;; Finally, connect to the networks.
+;; Finally, connect to the networks.
 (defun conn-erc ()
   "Connect to IRC."
   (interactive)
@@ -252,15 +260,60 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
         ))
 
 
-
-;; ============================================================================================================
+;; ==================
 ;;  EDITOR BEHAVIOUR
-;; ============================================================================================================
+;; ==================
+;; ------------
+;; Key bindings
+;; ------------
+;; (global-set-key (kbd "<f5>") 'copy-region-as-kill)
+(global-set-key (kbd "<prior>") (lambda () (interactive) (scroll-down 3)))
+(global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
+(global-set-key (kbd "C-x C-b") 'ibuffer) ;; list-buffer replacement
+(global-set-key (kbd "<f11>") 'toggle-fullscreen)
+
+;; GUI
+;; (menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; Modeline information
+(display-time-mode t)
+(column-number-mode t)
+(display-battery-mode t)
+
+;; Minibuffer handling
+(ido-mode t)
+
+;; recentf Setup
+(recentf-mode t)
+(setq recentf-auto-cleanup 'never)
+
+;; Startup
+(setq inhibit-startup-screen 1)
+(setq initial-scratch-message "")
+
 ;; Prevent backups from littering the file system
 (setq backup-directory-alist '(("." . "~/emacsbackups")))
 
-;; Font size (in 24, font is unusually bigger...)
-(set-face-attribute 'default nil :height 120) ;; In 1/10 pt: 100*0.10 = 10pt
+;; Parentheses
+;;(electric-pair-mode t)
+(show-paren-mode t)
+
+;; Tabs handling
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;; Scrolling
+(setq scroll-conservatively 10)
+(setq scroll-margin 2) ;;7
+
+;; Line wrapping
+(global-visual-line-mode 1)
+
+;; End of file newlines
+(setq require-final-newline t)
+(setq next-line-add-newlines nil)
 
 ;; Region selection
 (transient-mark-mode 0)
@@ -271,50 +324,10 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Syntax highlighting (font locking)
 (global-font-lock-mode t)
 
-;; Tabs handling
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
 ;; Javascript-mode tab length
 (setq js-indent-level 2)
 
-;; Minibuffer handling
-(ido-mode t)
-
-;; recentf Setup
-(recentf-mode t)
-(setq recentf-auto-cleanup 'never)
-
-;; Modeline information
-(display-time-mode t)
-(column-number-mode t)
-(display-battery-mode t)
-
-;; Scrolling
-(setq scroll-conservatively 10)
-(setq scroll-margin 2) ;;7
-
-;; Startup
-(setq inhibit-startup-screen 1)
-(setq initial-scratch-message "")
-
-;; Parentheses
-(show-paren-mode t)
-;;(electric-pair-mode t)
-
-;; Line wrapping
-(global-visual-line-mode 1)
-
-;; End of file newlines
-(setq require-final-newline t)
-(setq next-line-add-newlines nil)
-
-;; GUI
-(tool-bar-mode -1)
-;;(menu-bar-mode -1)
-(scroll-bar-mode -1)
-
-;; 3.22 Mouse avoidance
+;; Mouse avoidance
 ;; (mouse-avoidance-mode 'banish)
 
 ;; Browser
@@ -332,83 +345,90 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
-;; ------------
-;; Key bindings
-;; ------------
-;; (global-set-key [f5] 'copy-region-as-kill)
-(global-set-key (kbd "<prior>")    (lambda () (interactive) (scroll-down 3)))
-(global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
-
-;; Fullscreen toggle
-(defun toggle-fullscreen ()
-  "Toggle full screen on X11"
-  (interactive)
-  (when (eq window-system 'x)
-    (set-frame-parameter
-     nil 'fullscreen
-     (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
-
-(global-set-key [f11] 'toggle-fullscreen)
-
-
+;; Font size (in 24, font is unusually bigger...)
+(set-face-attribute 'default nil :height 120) ;; In 1/10 pt: 100*0.10 = 10pt
 
 
 ;; ==============
 ;;  Applications
 ;; ==============
-
-;; ------------------------------------------------------
+;; ---------------------
+;; 3rd party elisp files
+;; ---------------------
+(add-to-list 'load-path "~/.emacs.d/packages/")
 ;; Little Man Computer Simulator (Stefan Monnier IFT1215)
-;; ------------------------------------------------------
-(load "~/.emacs.d/packages/lmc")
-
-;; -----------------------------------
+(require 'lmc)
 ;; Gambit Scheme (Mark Feeley IFT2035)
-;; -----------------------------------
-(load "~/.emacs.d/packages/gambit")
-
-
-;; Initialize packages and activate them before the end of the script.
-;; (usually done after the script is ran, so package initialization can be tricky)
-(setq package-enable-at-startup nil)
-(package-initialize)
+(require 'gambit)
 
 ;; ------------
 ;; Repositories
 ;; ------------
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package)
+(add-to-list 'package-archives 
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
-;; ------
-;; Themes
-;; ------
-;;(add-to-list 'custom-theme-load-path ;; "/home/ken/.emacs.d/elpa/cyberpunk-theme-20140415.945/cyberpunk-theme.el")
+;; Not always up to date repos:
+;; ("marmalade" . "http://marmalade-repo.org/packages/")
+;; ("gnu" . "http://elpa.gnu.org/packages/") ;; Included
+
+;; Initialize packages and activate them before the end of the script.
+;; (Usually done after the script is ran, so package initialization can be tricky)
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+;; ----------------
+;; Package settings
+;; ----------------
+;; Theme
 (load-theme 'junio t)
 
-;; ------
-;; Auctex
-;; ------
+;; Gimmicky Nyan cat (not practical on smaller screens)
+;; (case window-system
+;;   ((x w32) (nyan-mode)))
 
-;; -----
+;; HTML & CSS hex color
+(add-hook 'html-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
+
+;; Yasnippet
+(require 'yasnippet)
+(yas-global-mode t)
+(add-hook 'term-mode-hook
+          (lambda() ;; Yas interferes with tab completion in ansi-term.
+            (setq yas-dont-activate t)))
+;;(yas/initialize)
+;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
+;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
+
+;; Auto-complete
+(require 'auto-complete)
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+;;;;;;(add-hook 'js2-mode-hook 'ac-js2-mode)
+;;(ac-set-trigger-key "TAB")
+;;(ac-set-trigger-key "<tab>")
+;;(define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
+;;(setq ac-trigger-key "C-i")
+
 ;; Magit
-;; -----
 (require 'magit)
 
-;; --------
+;; Auctex
+
+
 ;; js2-mode 
-;; --------
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;(add-hook 'js-mode-hook 'js2-minor-mode)
+;; (add-hook 'js-mode-hook 'js2-minor-mode) ;; Linting
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+
 ;; For more comprehensive completions you can opt to evaluate the code
 ;; for candidates. A browser needs to be connected to Emacs for the
 ;; evaluation completions to work. Put this in your init.el file.
-
 ;; `(setq ac-js2-evaluate-calls t)'
 
 ;; To add completions for external libraries add something like this:
-
 ;; (add-to-list 'ac-js2-external-libraries "path/to/lib/library.js")
 
 ;; Then connect a browser to Emacs by calling `(run-skewer)'. You may
@@ -420,40 +440,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Note: library completions will only work if `ac-js2-evaluate-calls'
 ;; is set and a browser is connected to Emacs.
 
-;; ------------
 ;; Haskell mode
-;; ------------
 (require 'haskell-mode)
 
-;; -------
 ;; Go mode
-;; -------
+(require 'go-mode)
 (add-hook 'before-save-hook #'gofmt-before-save)
-
-;; ------------
-;; Clojure mode
-;; ------------
-(require 'clojure-mode)
-
-
-;; -------------
-;; Auto-complete
-;; -------------
-(require 'auto-complete-config)
-;(add-to-list 'ac-dictionary-directories "~/.emacs.d/packages/auto-complete-1.3.1/dict")
-(ac-config-default)
-
-(add-hook 'js2-mode-hook 'ac-js2-mode)
-
-;; ---------
-;; Yasnippet
-;; ---------
-(require 'yasnippet)
-
-(add-hook 'term-mode-hook (lambda() ;; Yas interferes with tab completion in ansi-term.
-        (setq yas-dont-activate t))) ;; So I'm deactivating it for this hook.
-
-;;(yas/initialize)
-;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
-(yas-global-mode t)
-;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
