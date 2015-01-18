@@ -468,4 +468,8 @@ Define colors in 'blink-cursor-colors'."
 ;; Haskell mode
 (require 'haskell-mode)
 
+;; Yaml mode
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
 ;;; init.el ends here
