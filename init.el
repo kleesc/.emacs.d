@@ -1,16 +1,20 @@
-;; init.el --- 
+;;; init.el --- 
+;;
+;;; Commentary:
 ;;
 ;; Author: Kenny Lee Sin Cheong
 ;; URL: https://kleesc.net
 ;;
 ;; TODO: Seperate into smaller manageable modules
+;;
+;;; Code:
 
 ;; ==================
 ;;  CUSTOM FUNCTIONS
 ;; ==================
 ;; 1.2 Multi-buffer search
 (defun search (regexp)
-  "Search all buffers for a regexp."
+  "Search all buffers for a REGEXP."
   (interactive "sRegexp to search for: ")
   (multi-occur-in-matching-buffers ".*" regexp))
 
@@ -20,8 +24,10 @@
 
 (setq blink-cursor-count 0)
 (defun blink-cursor-timer-function ()
-  "Cyberpunk variant of timer 'blink-cursor-timer'. OVERWRITES original version in 'frame.el'.
-This one changes the cursor color on each blink. Define colors in 'blink-cursor-colors'."
+  "Cyberpunk variant of timer 'blink-cursor-timer'.  
+OVERWRITES original version in 'frame.el'.
+This one changes the cursor color on each blink.
+Define colors in 'blink-cursor-colors'."
   (when (not (internal-show-cursor-p))
         (when (>= blink-cursor-count (length blink-cursor-colors))
               (setq blink-cursor-count 0))
@@ -31,7 +37,7 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 
 ;; Fullscreen toggle
 (defun toggle-fullscreen ()
-  "Toggle full screen on X11"
+  "Toggle full screen on X11."
   (interactive)
   (when (eq window-system 'x)
     (set-frame-parameter
@@ -271,6 +277,9 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 (global-set-key (kbd "<next>")  (lambda () (interactive) (scroll-up 3)))
 (global-set-key (kbd "C-x C-b") 'ibuffer) ;; list-buffer replacement
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
+(global-set-key (kbd "<f8>") 'window-configuration-to-register)
+(global-set-key (kbd "<f9>") 'jump-to-register)
+
 
 ;; GUI
 ;; (menu-bar-mode -1)
@@ -412,11 +421,20 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;;(define-key ac-menu-map (kbd "<backtab>") 'ac-previous)
 ;;(setq ac-trigger-key "C-i")
 
+;; Flycheck
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+;; Flycheck tip
+(require 'flycheck-tip)
+(flycheck-tip-use-timer 'verbose)
+
 ;; Magit
 (require 'magit)
 
 ;; Auctex
-
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+;; (setq-default TeX-master nil
 
 ;; js2-mode 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -440,9 +458,14 @@ This one changes the cursor color on each blink. Define colors in 'blink-cursor-
 ;; Note: library completions will only work if `ac-js2-evaluate-calls'
 ;; is set and a browser is connected to Emacs.
 
-;; Haskell mode
-(require 'haskell-mode)
-
 ;; Go mode
 (require 'go-mode)
 (add-hook 'before-save-hook #'gofmt-before-save)
+
+;; Python
+;; (setq python-shell-virtualenv-path "")
+
+;; Haskell mode
+(require 'haskell-mode)
+
+;;; init.el ends here
