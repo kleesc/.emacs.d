@@ -79,24 +79,24 @@ Define colors in 'blink-cursor-colors'."
 
 
 ;; Imap gmail
-(add-to-list 'gnus-secondary-select-methods
-             '(nnimap "gmail"
-                      (nnimap-address "imap.gmail.com")
-                      (nnimap-server-port 993)
-                      (nnimap-authinfo-file "~/.authinfo.gpg")
-                      (nnimap-stream ssl)))
+;;;;(add-to-list 'gnus-secondary-select-methods
+;;;;             '(nnimap "gmail"
+;;;;                      (nnimap-address "imap.gmail.com")
+;;;;                      (nnimap-server-port 993)
+;;;;                      (nnimap-authinfo-file "~/.authinfo.gpg")
+;;;;                      (nnimap-stream ssl)))
 
 ;; Smtp gmail
-;(require 'starttls)
+;;;;(require 'starttls)
 (require 'smtpmail)
-(setq message-send-mail-function 'smtpmail-send-it
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587
-                                   "kenny.lee28@gmail.com" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587
-      gnus-ignored-newsgroups "^to\\.\\[^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+;;;;(setq message-send-mail-function 'smtpmail-send-it
+;;;;      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+;;;;      smtpmail-auth-credentials '(("smtp.gmail.com" 587
+;;;;                                   "kenny.lee28@gmail.com" nil))
+;;;;      smtpmail-default-smtp-server "smtp.gmail.com"
+;;;;      smtpmail-smtp-server "smtp.gmail.com"
+;;;;      smtpmail-smtp-service 587
+;;;;      gnus-ignored-newsgroups "^to\\.\\[^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 
 ;; all mails should be always displayed in the mailbox
 ;(setq gnus-permanently-visible-groups ".*INBOX")
@@ -169,23 +169,20 @@ Define colors in 'blink-cursor-colors'."
 ;; =====
 ;;  ERC
 ;; =====
+(load "~/.erc-auth")
+
 (add-hook 'erc-after-connect
           '(lambda (SERVER NICK)
              (cond
               ((string-match "freenode\\.net" SERVER)
-               (erc-message "PRIVMSG" "Nickserv identify ew231966"))
-
-              ((string-match "rizon\\.net" SERVER)
-               (erc-message "PRIVMSG" "Nickserv identify ew231966")))))
-
+               (erc-message "PRIVMSG" (concat "Nickserv identify " irc-freenode-nick-passwd))))))
 
 ;; Autojoin
 (require 'erc-join)
 (erc-autojoin-mode 1)
+;;(setq erc-autojoin-timing ident)
 ;; (setq erc-autojoin-channels-alist
-;;       '(("freenode.net" "#ruby" "#python-dev")
-;;         ("rizon.net" "#bakabt")))
-
+;;       '(("freenode.net" "#ruby" "#python-dev")))
 
 (require 'erc-match)
 (setq erc-keywords '("kleesc"))
