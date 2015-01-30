@@ -88,7 +88,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Smtp gmail
 ;;;;(require 'starttls)
-(require 'smtpmail)
+;;;;(require 'smtpmail)
 ;;;;(setq message-send-mail-function 'smtpmail-send-it
 ;;;;      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
 ;;;;      smtpmail-auth-credentials '(("smtp.gmail.com" 587
@@ -169,7 +169,7 @@ Define colors in 'blink-cursor-colors'."
 ;; =====
 ;;  ERC
 ;; =====
-(load "~/.erc-auth")
+(load "~/.emacs.d/.erc-auth")
 
 (add-hook 'erc-after-connect
           '(lambda (SERVER NICK)
