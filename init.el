@@ -390,8 +390,8 @@ Define colors in 'blink-cursor-colors'."
 (load-theme 'junio t)
 
 ;; Gimmicky Nyan cat (not practical on smaller screens)
- (case window-system
-   ((x w32) (nyan-mode)))
+;; (case window-system
+;;   ((x w32) (nyan-mode)))
 
 ;; HTML & CSS hex color
 (add-hook 'html-mode-hook 'rainbow-mode)
