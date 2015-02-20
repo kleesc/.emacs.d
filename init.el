@@ -390,8 +390,8 @@ Define colors in 'blink-cursor-colors'."
 (load-theme 'junio t)
 
 ;; Gimmicky Nyan cat (not practical on smaller screens)
-;; (case window-system
-;;   ((x w32) (nyan-mode)))
+ (case window-system
+   ((x w32) (nyan-mode)))
 
 ;; HTML & CSS hex color
 (add-hook 'html-mode-hook 'rainbow-mode)
@@ -431,7 +431,6 @@ Define colors in 'blink-cursor-colors'."
 ;; Auctex
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
-;; (setq-default TeX-master nil
 
 ;; js2-mode 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -458,7 +457,6 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Web-mode (When editing script in markup files) DOCS: http://web-mode.org/
 (require 'web-mode)
-(require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
@@ -472,12 +470,12 @@ Define colors in 'blink-cursor-colors'."
 (defun my-web-mode-hook ()
   "Hooks for Web mode."
   (setq web-mode-markup-indent-offset 2)
-)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-style-padding 1)
+  (setq web-mode-script-padding 1)
+  (setq web-mode-block-padding 0))
 (add-hook 'web-mode-hook  'my-web-mode-hook)
-
-(setq web-mode-markup-indent-offset 2)
-(setq web-mode-css-indent-offset 2)
-(setq web-mode-code-indent-offset 2)
 
 ;; Go mode
 (require 'go-mode)
