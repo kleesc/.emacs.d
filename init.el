@@ -543,7 +543,7 @@ Define colors in 'blink-cursor-colors'."
   (progn (global-set-key (kbd "M-x") 'helm-M-x)
          (global-set-key (kbd "M-y") 'helm-show-kill-ring)
          (global-set-key (kbd "C-x b") 'helm-mini)
-         (global-set-key (kbd "C-x C-f") 'helm-find-files)
+         ;;(global-set-key (kbd "C-x C-f") 'helm-find-files)
          (helm-mode t)))
 
 (defun toggle-helm-mode-off ()
@@ -552,7 +552,7 @@ Define colors in 'blink-cursor-colors'."
   (progn (global-set-key (kbd "M-x") 'execute-extended-command)
          (global-set-key (kbd "M-y") 'yank-pop)
          (global-set-key (kbd "C-x b") 'ido-switch-buffer)
-         (global-set-key (kbd "C-x C-f") 'ido-find-file)
+         ;;(global-set-key (kbd "C-x C-f") 'ido-find-file)
          (helm-mode 0)))
 
 (defun toggle-helm-mode ()
