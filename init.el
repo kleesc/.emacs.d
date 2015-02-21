@@ -200,7 +200,6 @@ Define colors in 'blink-cursor-colors'."
              (pcomplete-erc-setup)
              (erc-completion-mode 1)))
 
-
 (require 'erc-fill)
 (erc-fill-mode t)
 
@@ -283,9 +282,9 @@ Define colors in 'blink-cursor-colors'."
 (scroll-bar-mode -1)
 
 ;; Modeline information
-(display-time-mode t)
 (column-number-mode t)
-(display-battery-mode t)
+;; (display-time-mode t)
+;; (display-battery-mode t)
 
 ;; Minibuffer handling (Ido Mode)
 (ido-mode t)
@@ -304,7 +303,7 @@ Define colors in 'blink-cursor-colors'."
 (setq recentf-auto-cleanup 'never)
 
 ;; Startup
-(setq inhibit-startup-screen 1)
+(setq inhibit-startup-screen t)
 (setq initial-scratch-message "")
 
 ;; Prevent backups from littering the file system
@@ -320,7 +319,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Scrolling
 (setq scroll-conservatively 10)
-(setq scroll-margin 2) ;;7
+(setq scroll-margin 3) ;;7
 
 ;; Line wrapping
 (global-visual-line-mode 1)
@@ -499,6 +498,7 @@ Define colors in 'blink-cursor-colors'."
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+;; ----------
 ;; Helm Stuff
 ;; ----------
 (require 'helm)
@@ -581,11 +581,28 @@ Define colors in 'blink-cursor-colors'."
 (add-hook 'c++-mode-hook 'helm-gtags-mode)
 (add-hook 'asm-mode-hook 'helm-gtags-mode)
 
-(define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+(define-key helm-gtags-mode-map (kbd "C-c g a") 
+  'helm-gtags-tags-in-this-function)
 (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
 (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
 (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
 (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
 (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+
+;; ggtags 
+;; currently using helm-gtags...Because navigating results open new buffers
+;; (require 'ggtags)
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+;;               (ggtags-mode 1))))
+
+;; (define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+;; (define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+;; (define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+;; (define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+;; (define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+;; (define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+;; (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
 
 ;;; init.el ends here
