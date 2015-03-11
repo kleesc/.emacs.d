@@ -4,6 +4,12 @@ eshell/
 
 Gnus/
 
+elpa/gnupg
+
+ido.last
+
+recentf
+
 ac-comphist.dat
 
 .erc-auth

@@ -75,7 +75,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Gmane
 (add-to-list 'gnus-secondary-select-methods '(nntp "news.gmane.org"))
-(setq gnus-newsgroup-maximum-articles 10000)
+(setq gnus-newsgroup-maximum-articles 2000)
 
 
 ;; Imap gmail
@@ -87,16 +87,15 @@ Define colors in 'blink-cursor-colors'."
 ;;;;                      (nnimap-stream ssl)))
 
 ;; Smtp gmail
-;;;;(require 'starttls)
-;;;;(require 'smtpmail)
-;;;;(setq message-send-mail-function 'smtpmail-send-it
-;;;;      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-;;;;      smtpmail-auth-credentials '(("smtp.gmail.com" 587
-;;;;                                   "kenny.lee28@gmail.com" nil))
-;;;;      smtpmail-default-smtp-server "smtp.gmail.com"
-;;;;      smtpmail-smtp-server "smtp.gmail.com"
-;;;;      smtpmail-smtp-service 587
-;;;;      gnus-ignored-newsgroups "^to\\.\\[^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+(require 'starttls)
+(require 'smtpmail)
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials "~/.authinfo.gpg"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      gnus-ignored-newsgroups "^to\\.\\[^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
 
 ;; all mails should be always displayed in the mailbox
 ;(setq gnus-permanently-visible-groups ".*INBOX")
@@ -114,21 +113,21 @@ Define colors in 'blink-cursor-colors'."
 (setq bbdb/news-auto-create-p t)
 
 ;; Three panes layout
-(gnus-add-configuration
- '(article
-   (horizontal 1.0
-               (vertical 25
-                         (group 1.0))
-               (vertical 1.0
-                         (summary 0.25 point)
-                         (article 1.0)))))
-(gnus-add-configuration
- '(summary
-   (horizontal 1.0
-               (vertical 25
-                         (group 1.0))
-               (vertical 1.0
-                         (summary 1.0 point)))))
+;; (gnus-add-configuration
+;;  '(article
+;;    (horizontal 1.0
+;;                (vertical 25
+;;                          (group 1.0))
+;;                (vertical 1.0
+;;                          (summary 0.25 point)
+;;                          (article 1.0)))))
+;; (gnus-add-configuration
+;;  '(summary
+;;    (horizontal 1.0
+;;                (vertical 25
+;;                          (group 1.0))
+;;                (vertical 1.0
+;;                          (summary 1.0 point)))))
 
 ;; Two panes layout
 ;; (gnus-add-configuration
@@ -314,8 +313,8 @@ Define colors in 'blink-cursor-colors'."
 (show-paren-mode t)
 
 ;; Tabs handling
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+;; (setq-default indent-tabs-mode nil)
+;; (setq-default tab-width 4) ;; Defaults to 8
 
 ;; Scrolling
 (setq scroll-conservatively 10)
@@ -348,7 +347,7 @@ Define colors in 'blink-cursor-colors'."
 (setq browse-url-generic-program "google-chrome")
 
 ;; Emacs server
-;;(server-start) ---------BUGS IN WINDOWS
+(server-start)
 
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
@@ -359,7 +358,7 @@ Define colors in 'blink-cursor-colors'."
 (put 'set-goal-column 'disabled nil)
 
 ;; Font size (in 24, font is unusually bigger...)
-(set-face-attribute 'default nil :height 120) ;; In 1/10 pt: 100*0.10 = 10pt
+(set-face-attribute 'default nil :height 105) ;; In 1/10 pt: 100*0.10 = 10pt
 
 
 ;; ==============
@@ -483,6 +482,52 @@ Define colors in 'blink-cursor-colors'."
   (setq web-mode-script-padding 1)
   (setq web-mode-block-padding 0))
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; CC Mode
+;; Default global options
+;; ;; (setq c-default-style "linux")
+(defvaralias 'c-basic-offset 'tab-width)
+
+(add-hook 'java-mode-hook
+	  (lambda ()
+	    (setq c-set-style "java"
+		  tab-width 4)))
+
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (setq c-set-style "linux"
+		  tab-width 4)))
+
+;; Kernel files hook
+(defun c-lineup-arglist-tabs-only (ignored)
+  "Line up argument lists by tabs, not spaces"
+  (let* ((anchor (c-langelem-pos c-syntactic-element))
+	 (column (c-langelem-2nd-pos c-syntactic-element))
+	 (offset (- (1+ column) anchor))
+	 (steps (floor offset c-basic-offset)))
+    (* (max steps 1)
+       c-basic-offset)))
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            ;; Add kernel style
+            (c-add-style
+             "linux-tabs-only"
+             '("linux" (c-offsets-alist
+                        (arglist-cont-nonempty
+                         c-lineup-gcc-asm-reg
+                         c-lineup-arglist-tabs-only))))))
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (let ((filename (buffer-file-name)))
+              ;; Enable kernel mode for the appropriate files
+              (when (and filename
+                         (string-match (expand-file-name "~/src/linux-trees")
+                                       filename))
+                (setq indent-tabs-mode t)
+                (setq show-trailing-whitespace t)
+                (c-set-style "linux-tabs-only")))))
 
 ;; Go mode
 (require 'go-mode)
