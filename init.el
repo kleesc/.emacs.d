@@ -49,6 +49,8 @@ Define colors in 'blink-cursor-colors'."
 ;;  Gnus
 ;; ======
 (setq gnus-home-directory "~/.emacs.d/Gnus/")
+(setq user-mail-address "kenny.lee28@gmail.com")
+(setq user-full-name "Kenny Lee Sin Cheong")
 
 (setq gnus-select-method '(nnnil))
 (setq mm-text-html-renderer 'w3m)
@@ -57,26 +59,11 @@ Define colors in 'blink-cursor-colors'."
 ;(define-key gnus-article-mode-map [?M] 'browse-url-firefox)
 ;w3m-view-url-with-external-browser
 
-;; append "pinentry-program /usr/bin/pinentry-curses" to
-;; /home/ken/.gnupg/gpg-agent.conf
-;; to use non-graphical identification
-;;
-;; Remove user agent with (J r) from gmail from server buffer (^)
-;; (A z) for zombie groups, (A k) for killed groups
-;; (S k) to kill group
-;; (B m) to move article
-
-(setq user-mail-address "kenny.lee28@gmail.com")
-(setq user-full-name "Kenny Lee Sin Cheong")
-
-
 (require 'gnus) ;; Solve the "Symbol's value as variable is void" error
-
 
 ;; Gmane
 (add-to-list 'gnus-secondary-select-methods '(nntp "news.gmane.org"))
 (setq gnus-newsgroup-maximum-articles 2000)
-
 
 ;; Imap gmail
 ;;;;(add-to-list 'gnus-secondary-select-methods
@@ -107,31 +94,14 @@ Define colors in 'blink-cursor-colors'."
 ;; Message signature
 (setq gnus-posting-styles
       '((".*"
-         (signature "Kenny Lee Sin Cheong"))))
+         (signature "Kenny Lee Sin Cheong")
+	 ("Cc" ""))))
 
 ;; Contact autocompletion with Bbdb
-(setq bbdb/news-auto-create-p t)
-
-;; Three panes layout
-;; (gnus-add-configuration
-;;  '(article
-;;    (horizontal 1.0
-;;                (vertical 25
-;;                          (group 1.0))
-;;                (vertical 1.0
-;;                          (summary 0.25 point)
-;;                          (article 1.0)))))
-;; (gnus-add-configuration
-;;  '(summary
-;;    (horizontal 1.0
-;;                (vertical 25
-;;                          (group 1.0))
-;;                (vertical 1.0
-;;                          (summary 1.0 point)))))
-
-;; Two panes layout
-;; (gnus-add-configuration
-;;  '(article (vertical 1.0 (summary .35 point) (article 1.0))))
+;;(require 'bbdb)
+;;(bbdb-initialize 'gnus 'message) ;; Not required (installed via melpa)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-message)
 
 ;; Unicode Formatting
 (setq-default
@@ -161,8 +131,28 @@ Define colors in 'blink-cursor-colors'."
      (format "%s %d" name total-number-of-articles)
      'face topic-face)))
 
-;; (T n) to add topic, (T m) to move .
 ;; (gnus-topic-unindent) M-TAB doesn't work... System switch windows(Alt-TAB)
+
+;; Three panes layout
+;; (gnus-add-configuration
+;;  '(article
+;;    (horizontal 1.0
+;;                (vertical 25
+;;                          (group 1.0))
+;;                (vertical 1.0
+;;                          (summary 0.25 point)
+;;                          (article 1.0)))))
+;; (gnus-add-configuration
+;;  '(summary
+;;    (horizontal 1.0
+;;                (vertical 25
+;;                          (group 1.0))
+;;                (vertical 1.0
+;;                          (summary 1.0 point)))))
+
+;; Two panes layout
+;; (gnus-add-configuration
+;;  '(article (vertical 1.0 (summary .35 point) (article 1.0))))
 
 
 ;; =====
