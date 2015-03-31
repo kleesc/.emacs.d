@@ -97,12 +97,6 @@ Define colors in 'blink-cursor-colors'."
          (signature "Kenny Lee Sin Cheong")
 	 ("Cc" ""))))
 
-;; Contact autocompletion with Bbdb
-;;(require 'bbdb)
-;;(bbdb-initialize 'gnus 'message) ;; Not required (installed via melpa)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
-(add-hook 'gnus-startup-hook 'bbdb-insinuate-message)
-
 ;; Unicode Formatting
 (setq-default
  gnus-summary-line-format "%U%R%z %(%&user-date;  %-15,15f  %B%s%)\n"
@@ -337,7 +331,7 @@ Define colors in 'blink-cursor-colors'."
 (setq browse-url-generic-program "google-chrome")
 
 ;; Emacs server
-(server-start)
+;; (server-start)
 
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
@@ -474,6 +468,13 @@ Define colors in 'blink-cursor-colors'."
 (add-hook 'web-mode-hook  'my-web-mode-hook)
 
 ;; CC Mode
+;; gdb
+(setq
+ ;; use gdb-many-windows by default
+ gdb-many-windows t
+ ;; Non-nil means display source file containing the main routine at startup
+); gdb-show-main t)
+
 ;; Default global options
 (setq c-default-style "linux")
 (defvaralias 'c-basic-offset 'tab-width)
@@ -530,6 +531,31 @@ Define colors in 'blink-cursor-colors'."
 ;; Yaml mode
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;; Bbdb
+;; Contact autocompletion with Bbdb
+(require 'bbdb)
+(bbdb-initialize 'gnus 'message)
+(bbdb-mua-auto-update-init 'gnus 'message)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-gnus)
+(add-hook 'gnus-startup-hook 'bbdb-insinuate-message)
+;;(setq bbdb-update-records-p 'create)
+;;(setq bbdb-ignore-message-alist '((("To" "CC") . "email@home")))
+(setq bbdb-use-pop-up nil)
+;; size of the bbdb popup
+(setq bbdb-pop-up-window-size 0.15)
+(setq bbdb-mua-pop-up-window-size 0.15)
+;; What do we do when invoking bbdb interactively
+(setq bbdb-mua-update-interactive-p '(query . create))
+;; Make sure we look at every address in a message and not only the
+;; first one
+(setq bbdb-message-all-addresses t)
+;; use ; on a message to invoke bbdb interactively
+(add-hook
+ 'gnus-summary-mode-hook
+ (lambda ()
+    (define-key gnus-summary-mode-map (kbd ";") 'bbdb-mua-edit-field)))
+
 
 ;; ----------
 ;; Helm Stuff
