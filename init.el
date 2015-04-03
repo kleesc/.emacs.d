@@ -44,6 +44,16 @@ Define colors in 'blink-cursor-colors'."
      nil 'fullscreen
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
+;; Sync scratch buffer with file
+(defvar scratch-buffer-file-name "~/.scratch" "Scratch buffer.")
+(defun sync-scratch-with-file ()
+  "Replace *scratch* buffer with scratch-buffer-file-name."
+  (save-window-excursion
+   (find-file scratch-buffer-file-name)
+   (kill-buffer "*scratch*")
+   (rename-buffer "*scratch*")
+   (org-mode)))
+(when (file-exists-p "~/.scratch") (sync-scratch-with-file))
 
 ;; ======
 ;;  Gnus
@@ -66,12 +76,12 @@ Define colors in 'blink-cursor-colors'."
 (setq gnus-newsgroup-maximum-articles 2000)
 
 ;; Imap gmail
-;;;;(add-to-list 'gnus-secondary-select-methods
-;;;;             '(nnimap "gmail"
-;;;;                      (nnimap-address "imap.gmail.com")
-;;;;                      (nnimap-server-port 993)
-;;;;                      (nnimap-authinfo-file "~/.authinfo.gpg")
-;;;;                      (nnimap-stream ssl)))
+(add-to-list 'gnus-secondary-select-methods
+            '(nnimap "gmail"
+                     (nnimap-address "imap.gmail.com")
+                     (nnimap-server-port 993)
+                     (nnimap-authinfo-file "~/.authinfo.gpg")
+                     (nnimap-stream ssl)))
 
 ;; Smtp gmail
 (require 'starttls)
@@ -331,7 +341,7 @@ Define colors in 'blink-cursor-colors'."
 (setq browse-url-generic-program "google-chrome")
 
 ;; Emacs server
-;; (server-start)
+(server-start)
 
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
@@ -542,6 +552,7 @@ Define colors in 'blink-cursor-colors'."
 ;;(setq bbdb-update-records-p 'create)
 ;;(setq bbdb-ignore-message-alist '((("To" "CC") . "email@home")))
 (setq bbdb-use-pop-up nil)
+(setq bbdb-mua-pop-up nil)
 ;; size of the bbdb popup
 (setq bbdb-pop-up-window-size 0.15)
 (setq bbdb-mua-pop-up-window-size 0.15)
