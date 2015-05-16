@@ -387,7 +387,7 @@ Define colors in 'blink-cursor-colors'."
 ;; Package settings
 ;; ----------------
 ;; Theme
-(load-theme 'junio t)
+(load-theme 'ample t)
 
 ;; Gimmicky Nyan cat (not practical on smaller screens)
 ;; (case window-system
@@ -427,6 +427,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Magit
 (require 'magit)
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; Auctex
 (setq TeX-auto-save t)
