@@ -45,7 +45,7 @@ Define colors in 'blink-cursor-colors'."
      (when (not (frame-parameter nil 'fullscreen)) 'fullboth))))
 
 ;; Sync scratch buffer with file
-(defvar scratch-buffer-file-name "~/.scratch" "Scratch buffer.")
+(defvar scratch-buffer-file-name "~/Dropbox/.scratch" "Scratch buffer.")
 (defun sync-scratch-with-file ()
   "Replace *scratch* buffer with scratch-buffer-file-name."
   (save-window-excursion
@@ -53,7 +53,7 @@ Define colors in 'blink-cursor-colors'."
    (kill-buffer "*scratch*")
    (rename-buffer "*scratch*")
    (org-mode)))
-(when (file-exists-p "~/.scratch") (sync-scratch-with-file))
+(when (file-exists-p scratch-buffer-file-name) (sync-scratch-with-file))
 
 ;; ======
 ;;  Gnus
@@ -566,7 +566,13 @@ Define colors in 'blink-cursor-colors'."
 (add-hook
  'gnus-summary-mode-hook
  (lambda ()
-    (define-key gnus-summary-mode-map (kbd ";") 'bbdb-mua-edit-field)))
+   (define-key gnus-summary-mode-map (kbd ";") 'bbdb-mua-edit-field)))
+
+;; sr-speedbar
+(setq sr-speedbar-skip-other-window-p t)
+(setq sr-speedbar-right-side nil)
+;; sr-speedbar-max-width
+(global-set-key (kbd "<f5>") 'sr-speedbar-toggle)
 
 
 ;; ----------
