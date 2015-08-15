@@ -343,6 +343,10 @@ Define colors in 'blink-cursor-colors'."
 ;; Emacs server
 (server-start)
 
+;; exec-path and PATH
+(add-to-list 'exec-path "~/bin/")
+(setenv "PATH" (concat "/home/ken/bin:" (getenv "PATH")))
+
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
 
@@ -643,6 +647,12 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Helm-gtags
 ;; ----------
+
+;; Where the symlinks and database to system headers are located.
+;; Doesn't seem to work at the moment (probably a helm-gtags issue).
+;; Symlink required directories into project root (bit of a hack but works)
+(setenv "GTAGSLIBPATH" "/home/ken/.gtags/")
+
 (setq helm-gtags-ignore-case t
       helm-gtags-auto-update t
       helm-gtags-use-input-at-cursor t
