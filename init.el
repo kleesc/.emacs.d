@@ -272,6 +272,11 @@ Define colors in 'blink-cursor-colors'."
 (global-unset-key (kbd "C-x C-c"))
 (global-set-key (kbd "C-x C-c C-x") 'save-buffers-kill-terminal)
 
+;; Macbook keybord layout
+(setq ns-function-modifier 'control)
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+
 ;; GUI
 ;; (menu-bar-mode -1)
 (tool-bar-mode -1)
