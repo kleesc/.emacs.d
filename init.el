@@ -3,9 +3,8 @@
 ;;; Commentary:
 ;;
 ;; Author: Kenny Lee Sin Cheong
-;; URL: https://kleesc.net
+;; URL: https://kleesc.com
 ;;
-;; TODO: Seperate into smaller manageable modules
 ;;
 ;;; Code:
 
@@ -268,6 +267,9 @@ Define colors in 'blink-cursor-colors'."
 (global-set-key (kbd "<f11>") 'toggle-fullscreen)
 (global-set-key (kbd "<f8>") 'window-configuration-to-register)
 (global-set-key (kbd "<f9>") 'jump-to-register)
+;; Exited emacs by accident too many times!!!
+(global-unset-key (kbd "C-x C-c"))
+(global-set-key (kbd "C-x C-c C-x") 'save-buffers-kill-terminal)
 
 ;; GUI
 ;; (menu-bar-mode -1)
@@ -427,7 +429,7 @@ Define colors in 'blink-cursor-colors'."
 (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; Flycheck tip
 (require 'flycheck-tip)
-(flycheck-tip-use-timer 'verbose)
+;(flycheck-tip-use-timer 'verbose)
 
 ;; Magit
 (require 'magit)
