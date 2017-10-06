@@ -353,7 +353,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; exec-path and PATH
 (add-to-list 'exec-path "~/bin/")
-(setenv "PATH" (concat "/home/ken/bin:" (getenv "PATH")))
+(setenv "PATH" (concat "/home/kenny/bin:" (getenv "PATH")))
 
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
@@ -544,6 +544,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Go mode
 (require 'go-mode)
+(require 'go-guru)
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
                           "[ \t\n]*$"
@@ -555,15 +556,20 @@ Define colors in 'blink-cursor-colors'."
 
 (when window-system (set-exec-path-from-shell-PATH))
 
-(setenv "GOPATH" "/home/ken/workspace/go")
-(add-to-list 'exec-path "/home/ken/workspace/go/bin")
+(setenv "GOPATH" "/home/kenny/workspace/go")
+(add-to-list 'exec-path "/home/kenny/workspace/go/bin")
 
+;; go get -u github.com/nsf/gocode
 (defun auto-complete-for-go ()
   (auto-complete-mode 1))
 (add-hook 'go-mode-hook 'auto-complete-for-go)
 (with-eval-after-load 'go-mode
    (require 'go-autocomplete))
 
+;; go get golang.org/x/tools/cmd/...
+;; go get github.com/rogpeppe/godef
+;; go get golang.org/x/tools/cmd/goimports
+;; go get golang.org/x/tools/cmd/guru
 (defun my-go-mode-hook ()
   ; Use goimports instead of go-fmt
   (setq gofmt-command "goimports")
@@ -573,7 +579,9 @@ Define colors in 'blink-cursor-colors'."
   (if (not (string-match "go" compile-command))
       (set (make-local-variable 'compile-command)
            "go build -v && go test -v && go vet"))
-  ; Godef jump key binding
+; Go oracle (aka guru)
+  (go-guru-hl-identifier-mode)
+  ; (load-file "$GOPATH/src/golang.org/x/tools/cmd/oracle/oracle.el")
   ; Godef jump key binding
   (local-set-key (kbd "M-.") 'godef-jump)
   (local-set-key (kbd "M-,") 'pop-tag-mark)
@@ -694,7 +702,7 @@ Define colors in 'blink-cursor-colors'."
 ;; Where the symlinks and database to system headers are located.
 ;; Doesn't seem to work at the moment (probably a helm-gtags issue).
 ;; Symlink required directories into project root (bit of a hack but works)
-(setenv "GTAGSLIBPATH" "/home/ken/.gtags/")
+(setenv "GTAGSLIBPATH" "/home/kenny/.gtags/")
 
 (setq helm-gtags-ignore-case t
       helm-gtags-auto-update t
