@@ -399,7 +399,7 @@ Define colors in 'blink-cursor-colors'."
 ;; Package settings
 ;; ----------------
 ;; Theme
-(load-theme 'ample t)
+(load-theme 'monokai t)
 
 ;; Gimmicky Nyan cat (not practical on smaller screens)
 ;; (case window-system
