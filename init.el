@@ -338,6 +338,7 @@ Define colors in 'blink-cursor-colors'."
 ;; Syntax highlighting (font locking)
 (global-font-lock-mode t)
 
+;; TODO(kleesc): Move this elsewhere
 ;; Javascript-mode tab length
 (setq js-indent-level 2)
 
@@ -354,6 +355,7 @@ Define colors in 'blink-cursor-colors'."
 ;; exec-path and PATH
 (add-to-list 'exec-path "~/bin/")
 (setenv "PATH" (concat "/home/kenny/bin:" (getenv "PATH")))
+(setenv "PATH" (concat "/home/kenny/virtualenv/main/bin/pyls:" (getenv "PATH")))
 
 ;; ANSI Color in terminals
 (ansi-color-for-comint-mode-on)
@@ -405,10 +407,6 @@ Define colors in 'blink-cursor-colors'."
 ;; (case window-system
 ;;   ((x w32) (nyan-mode)))
 
-;; HTML & CSS hex color
-(add-hook 'html-mode-hook 'rainbow-mode)
-(add-hook 'css-mode-hook 'rainbow-mode)
-
 ;; Yasnippet
 (require 'yasnippet)
 (yas-global-mode t)
@@ -420,10 +418,14 @@ Define colors in 'blink-cursor-colors'."
 ;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
 
 ;; Auto-complete
-(require 'auto-complete)
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; TODO(kleesc): Remove
+;; (require 'auto-complete)
+;; (require 'auto-complete-config)
+;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+;; (ac-config-default)
 ;;;;;;(add-hook 'js2-mode-hook 'ac-js2-mode)
 ;;(ac-set-trigger-key "TAB")
 ;;(ac-set-trigger-key "<tab>")
@@ -439,7 +441,6 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Magit
 (require 'magit)
-(setq magit-last-seen-setup-instructions "1.4.0")
 
 ;; Auctex
 (setq TeX-auto-save t)
@@ -449,24 +450,8 @@ Define colors in 'blink-cursor-colors'."
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 ;; (add-hook 'js-mode-hook 'js2-minor-mode) ;; Linting
 (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
-
-;; For more comprehensive completions you can opt to evaluate the code
-;; for candidates. A browser needs to be connected to Emacs for the
-;; evaluation completions to work. Put this in your init.el file.
-;; `(setq ac-js2-evaluate-calls t)'
-
-;; To add completions for external libraries add something like this:
-;; (add-to-list 'ac-js2-external-libraries "path/to/lib/library.js")
-
-;; Then connect a browser to Emacs by calling `(run-skewer)'. You may
-;; need to save the buffer for completions to start.
-
-;; If auto-complete mode is installed on your system then completions
-;; should start showing up otherwise use `completion-at-point'.
-
-;; Note: library completions will only work if `ac-js2-evaluate-calls'
-;; is set and a browser is connected to Emacs.
-
+(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . js2-jsx-mode))
+(add-to-list 'interpreter-mode-alist '("node" . js2-jsx-mode))
 
 ;; Web-mode (When editing script in markup files) DOCS: http://web-mode.org/
 (require 'web-mode)
@@ -490,6 +475,10 @@ Define colors in 'blink-cursor-colors'."
   (setq web-mode-script-padding 1)
   (setq web-mode-block-padding 0))
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+;; HTML & CSS hex color
+(add-hook 'html-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
 
 ;; CC Mode
 ;; gdb
@@ -560,11 +549,25 @@ Define colors in 'blink-cursor-colors'."
 (add-to-list 'exec-path "/home/kenny/workspace/go/bin")
 
 ;; go get -u github.com/nsf/gocode
-(defun auto-complete-for-go ()
-  (auto-complete-mode 1))
-(add-hook 'go-mode-hook 'auto-complete-for-go)
-(with-eval-after-load 'go-mode
-   (require 'go-autocomplete))
+(require 'company-go)
+(add-hook 'go-mode-hook (lambda ()
+                          (company-mode)
+                          (set (make-local-variable 'company-backends) '(company-go))))
+(setq company-tooltip-limit 20)                      ; bigger popup window
+(setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+(setq company-echo-delay 0)                          ; remove annoying blinking
+(setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-preview ((t (:foreground "darkgray" :underline t))))
+ '(company-preview-common ((t (:inherit company-preview))))
+ '(company-tooltip ((t (:background "lightgray" :foreground "black"))))
+ '(company-tooltip-common ((((type x)) (:inherit company-tooltip :weight bold)) (t (:inherit company-tooltip))))
+ '(company-tooltip-common-selection ((((type x)) (:inherit company-tooltip-selection :weight bold)) (t (:inherit company-tooltip-selection))))
+ '(company-tooltip-selection ((t (:background "steelblue" :foreground "white")))))
 
 ;; go get golang.org/x/tools/cmd/...
 ;; go get github.com/rogpeppe/godef
