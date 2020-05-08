@@ -401,18 +401,18 @@ Define colors in 'blink-cursor-colors'."
 ;; Package settings
 ;; ----------------
 ;; Theme
-(load-theme 'monokai t)
+(load-theme 'molokai t)
 
 ;; Gimmicky Nyan cat (not practical on smaller screens)
 ;; (case window-system
 ;;   ((x w32) (nyan-mode)))
 
 ;; Yasnippet
-(require 'yasnippet)
-(yas-global-mode t)
-(add-hook 'term-mode-hook
-          (lambda() ;; Yas interferes with tab completion in ansi-term.
-            (setq yas-dont-activate t)))
+;; (require 'yasnippet)
+;; (yas-global-mode t)
+;; (add-hook 'term-mode-hook
+;;           (lambda() ;; Yas interferes with tab completion in ansi-term.
+;;             (setq yas-dont-activate t)))
 ;;(yas/initialize)
 ;;(yas/load-directory "~/.emacs.d/packages/yasnippet-master/snippets")
 ;;(setq yas/prompt-functions '(yas/dropdown-prompt)) ;; Uses dropdown-list.el instead of OS window
@@ -439,8 +439,8 @@ Define colors in 'blink-cursor-colors'."
 (require 'flycheck-tip)
 ;(flycheck-tip-use-timer 'verbose)
 
-;; Magit
-(require 'magit)
+;; ;; Magit
+;; (require 'magit)
 
 ;; Auctex
 (setq TeX-auto-save t)
@@ -593,6 +593,7 @@ Define colors in 'blink-cursor-colors'."
 
 ;; Python
 ;; (setq python-shell-virtualenv-path "")
+(add-hook 'python-mode-hook 'anaconda-mode)
 
 ;; Haskell mode
 (require 'haskell-mode)
@@ -747,3 +748,11 @@ Define colors in 'blink-cursor-colors'."
 ;; (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
 
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (anaconda-mode protobuf-mode json-mode yaml-mode sublime-themes sr-speedbar s rainbow-mode nyan-mode helm-gtags go-guru flycheck-tip company-go ample-theme))))
