@@ -11,7 +11,30 @@
 ;; ==================
 ;;  CUSTOM FUNCTIONS
 ;; ==================
-;; 1.2 Multi-buffer search
+(define-globalized-minor-mode 
+  global-text-scale-mode
+  text-scale-mode
+  (lambda () (text-scale-mode 1)))
+
+(defun global-text-scale-adjust (inc) (interactive)
+  (text-scale-set 1)
+  (kill-local-variable 'text-scale-mode-amount)
+  (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
+  (global-text-scale-mode 1)
+  )
+
+(global-set-key (kbd "M-0")
+		'(lambda () (interactive)
+			 (global-text-scale-adjust (- text-scale-mode-amount))
+			 (global-text-scale-mode -1)))
+(global-set-key (kbd "M-+")
+		'(lambda () (interactive) (global-text-scale-adjust 1)))
+(global-set-key (kbd "M--")
+		'(lambda () (interactive) (global-text-scale-adjust -1)))
+
+
+
+;; Multi-buffer search
 (defun search (regexp)
   "Search all buffers for a REGEXP."
   (interactive "sRegexp to search for: ")
@@ -748,11 +771,3 @@ Define colors in 'blink-cursor-colors'."
 ;; (define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
 
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (anaconda-mode protobuf-mode json-mode yaml-mode sublime-themes sr-speedbar s rainbow-mode nyan-mode helm-gtags go-guru flycheck-tip company-go ample-theme))))
